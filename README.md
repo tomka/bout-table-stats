@@ -17,7 +17,7 @@ behavior pattern.
 Use the `--help`` option for more details. A typical call might look like this:
 
 ```
-python make-histograms.py -l info -pf 15 30 example.csv
+python bouttablestats.py -l info -pf 15 30 example.csv
 ```
 
 This uses a CSV file named example.csv with log level "info", pause bout is
