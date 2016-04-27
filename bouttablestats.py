@@ -23,7 +23,7 @@ from itertools import groupby
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def create_histograms(s, p, path, offset=1, begin_with_stimuli=True,
+def create_histograms(s, p, path, offset=1, begin_with_stimuli=False,
         delim=';', nheadrows=1, nomerge=False, max_rows=None):
 
     logger.info("Creating pattern histograms beginning with {} bout in file: {}" \
@@ -132,16 +132,16 @@ def make_histogram(bouts):
 def get_arg_parser():
     parser = argparse.ArgumentParser(description="calculate pattern"
             "historgram in stimuli bouts")
-    parser.add_argument("-pf", "--pause-first", action="store_true",
-            default=False, help="The first bout is a pause")
+    parser.add_argument("-sf", "--stimuli-first", action="store_true",
+            default=False, help="The first bout is a stimuli bout")
     parser.add_argument("-nm", "--no-merge", action="store_true",
             default=False, help="Set if adjacent same behaviors in bouts shouldn't be combined")
-    parser.add_argument("-o", "--offset", type=int, default=1,
+    parser.add_argument("-o", "--offset", type=int, default=0,
             help="The column offset to the first bout")
     parser.add_argument("-d", "--delim", type=str,
             help='Delimiter in CSV file', default=";")
     parser.add_argument("-hr", "--head-rows", type=int,
-            help='Number of header rows in CSV file', default=1)
+            help='Number of header rows in CSV file', default=0)
     parser.add_argument("-l", "--log", type=str, choices=['error', 'warning', 'info', 'debug'],
             help='Number of header rows in CSV file', default='info')
     parser.add_argument("-n", "--max-rows", type=int, default=None,
@@ -163,5 +163,5 @@ if __name__ == '__main__':
     logger.setLevel(loglevel)
 
     create_histograms(args.s, args.p, args.file, args.offset, not
-            args.pause_first, args.delim, args.head_rows, args.no_merge,
+            args.stimuli_first, args.delim, args.head_rows, args.no_merge,
             args.max_rows)
