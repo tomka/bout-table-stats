@@ -60,6 +60,7 @@ def create_histograms(s, p, path, offset=1, begin_with_stimuli=True,
         linereader = csv.reader(csvfile, delimiter=delim)
         stimuli_bout = begin_with_stimuli
         current_loc = offset
+        bout_label = "Bout" if nomerge else "Bout (merged)"
         for n, row in enumerate(linereader):
             if n < nheadrows:
                 head_rows.append(row)
@@ -78,8 +79,9 @@ def create_histograms(s, p, path, offset=1, begin_with_stimuli=True,
 
                 # Merge adjacent bout elements if they are the same, if not disabled
                 bout = tuple(raw_bout if nomerge else [k for k,v in groupby(raw_bout)])
-                logger.debug("Bout start: {} bound end: {} Bout: {}" \
-                        .format(start, start + length - 1, ",".join(bout)))
+                bout_alias = "S" if stimuli_bout else "P"
+                logger.debug("{}: Bout start: {} bound end: {} {}: {}" \
+                        .format(bout_alias, start, start + length - 1, bout_label, ",".join(bout)))
 
                 # If we can't get enough content anymore, stop
                 if length != len(raw_bout):
