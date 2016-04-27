@@ -113,15 +113,22 @@ def create_histograms(s, p, path, offset=1, begin_with_stimuli=True,
     logger.debug("Pause histogram: \n{}".format(format_histogram(pause_ptree)))
 
 def percentage_tree(histogram):
-    return histogram
     def walk(nodes):
-        level = {}
-        for n in nodes:
-            # Get percentage of node count vs total count on this level
-            total = 0
-            for e,p in nodes.iteritems():
-                total += p.count
-            nodes = nodes.get('children')
+        new_level = {}
+        # Get percentage of node count vs total count on this level
+        total = 0
+        print(nodes)
+        for e,p in nodes.items():
+            total += p['count']
+        for e,p in nodes.items():
+            children = p.get('children')
+            new_children = walk(children) if children else {}
+            new_level[e] = {
+                'percent': p['count'] / total,
+                'count': p['count'],
+                'children': new_children
+            }
+        return new_level
 
     return walk(histogram)
 
