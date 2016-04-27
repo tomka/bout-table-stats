@@ -20,10 +20,8 @@ import pprint
 from itertools import groupby
 
 
-# Get an instance of a logger and attach a console handler to it
+# Get an instance of a logger
 logger = logging.getLogger(__name__)
-ch = logging.StreamHandler()
-logger.addHandler(ch)
 
 parser = argparse.ArgumentParser(description="calculate pattern"
         "historgram in stimuli bouts")
@@ -154,9 +152,11 @@ def make_histogram(bouts):
 if __name__ == '__main__':
     args = parser.parse_args()
 
+    ch = logging.StreamHandler()
+    logger.addHandler(ch)
     loglevel = getattr(logging, args.log.upper())
-    logger.setLevel(loglevel)
     ch.setLevel(loglevel)
+    logger.setLevel(loglevel)
 
     create_histograms(args.s, args.p, args.file, args.offset, not
             args.pause_first, args.delim, args.head_rows, args.no_merge,
