@@ -23,26 +23,6 @@ from itertools import groupby
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-parser = argparse.ArgumentParser(description="calculate pattern"
-        "historgram in stimuli bouts")
-parser.add_argument("-pf", "--pause-first", action="store_true",
-        default=False, help="The first bout is a pause")
-parser.add_argument("-nm", "--no-merge", action="store_true",
-        default=False, help="Set if adjacent same behaviors in bouts shouldn't be combined")
-parser.add_argument("-o", "--offset", type=int, default=1,
-        help="The column offset to the first bout")
-parser.add_argument("-d", "--delim", type=str,
-        help='Delimiter in CSV file', default=";")
-parser.add_argument("-hr", "--head-rows", type=int,
-        help='Number of header rows in CSV file', default=1)
-parser.add_argument("-l", "--log", type=str, choices=['error', 'warning', 'info', 'debug'],
-        help='Number of header rows in CSV file', default='info')
-parser.add_argument("-n", "--max-rows", type=int, default=None,
-        help="Limit the number of rows to read fom the input file")
-parser.add_argument("s", type=int, help="the number of stimuli columns")
-parser.add_argument("p", type=int, help="the number of pause columns")
-parser.add_argument("file", type=str, help="the CSV file to load")
-
 def create_histograms(s, p, path, offset=1, begin_with_stimuli=True,
         delim=';', nheadrows=1, nomerge=False, max_rows=None):
 
@@ -149,7 +129,31 @@ def make_histogram(bouts):
 
     return root
 
+def get_arg_parser():
+    parser = argparse.ArgumentParser(description="calculate pattern"
+            "historgram in stimuli bouts")
+    parser.add_argument("-pf", "--pause-first", action="store_true",
+            default=False, help="The first bout is a pause")
+    parser.add_argument("-nm", "--no-merge", action="store_true",
+            default=False, help="Set if adjacent same behaviors in bouts shouldn't be combined")
+    parser.add_argument("-o", "--offset", type=int, default=1,
+            help="The column offset to the first bout")
+    parser.add_argument("-d", "--delim", type=str,
+            help='Delimiter in CSV file', default=";")
+    parser.add_argument("-hr", "--head-rows", type=int,
+            help='Number of header rows in CSV file', default=1)
+    parser.add_argument("-l", "--log", type=str, choices=['error', 'warning', 'info', 'debug'],
+            help='Number of header rows in CSV file', default='info')
+    parser.add_argument("-n", "--max-rows", type=int, default=None,
+            help="Limit the number of rows to read fom the input file")
+    parser.add_argument("s", type=int, help="the number of stimuli columns")
+    parser.add_argument("p", type=int, help="the number of pause columns")
+    parser.add_argument("file", type=str, help="the CSV file to load")
+
+    return parser
+
 if __name__ == '__main__':
+    parser = get_arg_parser()
     args = parser.parse_args()
 
     ch = logging.StreamHandler()
